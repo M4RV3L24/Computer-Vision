@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Load your image
-image_path = 'meet 2/buah.jpeg'  # Replace with your image path
+image_path = 'examples/images/applelogo.jpg'  # Replace with your image path
 img = cv2.imread(image_path)
 
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -43,7 +43,7 @@ for i in range(k2, img.shape[0]-k2):
 # Display the image
 combined_img = np.hstack((img, img_copy))
 
-scale_percent = 250  # Adjust this percentage to resize the image as needed
+scale_percent = 20  # Adjust this percentage to resize the image as needed
 width = int(combined_img.shape[1] * scale_percent / 100)
 height = int(combined_img.shape[0] * scale_percent / 100)
 dim = (width, height)

@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 from functions import *
 
-image_array, rows, cols = readImage('images/cat.jpg')
+image_array, rows, cols = readImage('examples/images/ghoul.jpg')
 
 filter_array = np.zeros((5, 5))
 for i in range(5):
@@ -24,6 +24,6 @@ for row in range(rows):
                     rgb[idx] += image_array[row + rdif, col + cdif, idx] * filter_array[rdif + rdifs, cdif + cdifs]
         filtered_array[row, col] = rgb
         
-saveImage(filtered_array, 'images/filtered-cat-half.jpg')
-combineImage('images/cat.jpg', 'images/filtered-cat-half.jpg', 'images/combined-cat-half.jpg', True)
+saveImage(filtered_array, 'examples/images/ghoulF.jpg')
+combineImage('examples/images/ghoul.jpg', 'examples/images/ghoulF.jpg', 'examples/images/combined-ghoul.jpg', True)
         
