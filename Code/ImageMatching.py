@@ -99,7 +99,7 @@ def brief_feature_matching(image1, image2):
     # Match descriptors
     matches = match_descriptors(desc1, desc2)
     matches = sorted(matches, key=lambda x: x.distance)
-    match_img = cv2.drawMatches(image1, kp1, image2, kp2, matches[:10], None, flags=2)
+    match_img = cv2.drawMatches(image1, kp1, image2, kp2, matches[:100], None, flags=2)
     return match_img, kp1, kp2
 
 # Function to perform ORB feature matching
