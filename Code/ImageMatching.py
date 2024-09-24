@@ -45,7 +45,7 @@ def compute_brief_descriptors(image):
         angle = kp.angle
 
         # Compute the rotation matrix for the keypoint
-        M = cv2.getRotationMatrix2D((kp.pt[0], kp.pt[1]), angle)
+        M = cv2.getRotationMatrix2D((kp.pt[0], kp.pt[1]), angle, 1)
 
         # Apply the rotation matrix to the keypoint's patch
         patch = cv2.warpAffine(image, M, (image.shape[1], image.shape[0]))
