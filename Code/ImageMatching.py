@@ -4,32 +4,25 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
 
-# Step 1: Detect keypoints using FAST
+# Detect keypoints using FAST
 def detect_fast_keypoints(image):
-    # Initialize FAST detector
     fast = cv2.FastFeatureDetector_create()
-
-    # Detect keypoints
     keypoints = fast.detect(image, None)
     return keypoints
 
-# Step 1: Detect keypoints using ORB
+# Detect keypoints using ORB
 def detect_orb_keypoints(image):
-    orb = cv2.ORB_create()  # Initialize ORB detector
+    orb = cv2.ORB_create()  
     keypoints = orb.detect(image, None)
     return keypoints
 
-# Step 1: Detect keypoints using SIFT (for orientation information)
+# Detect keypoints using SIFT (for orientation information)
 def detect_sift_keypoints(image):
-    # Initialize SIFT detector
     sift = cv2.SIFT_create()
-
-    # Detect keypoints with orientation
     keypoints = sift.detect(image, None)
     return keypoints
 
-
-# Function to compute BRIEF descriptors
+# Compute BRIEF descriptors
 def compute_brief_descriptors(image):
     # Initialize BRIEF descriptor
     # star = cv2.xfeatures2d.StarDetector_create() 
@@ -76,33 +69,31 @@ def compute_brief_descriptors(image):
     # cv2.drawKeypoints(image, kp, keypoints_without_size, color = (0, 255, 0))
     # return kp, descriptors
 
+
+# Compute FREAK descriptors
 def compute_freak_descriptors(image, keypoints):
-  # Compute FREAK descriptors
   freak = cv2.xfeatures2d.FREAK_create()
   keypoints, descriptors = freak.compute(image, keypoints)
   return keypoints, descriptors
 
-# Function to match descriptors using BFMatcher
+# Match descriptors using BFMatcher
 def match_descriptors(desc1, desc2):
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(desc1, desc2)
     matches = sorted(matches, key=lambda x: x.distance)
-     # Draw the top 10 matches
     return matches
 
+# Match image using BRIEF descriptors
 def brief_feature_matching(image1, image2):
-    # Detect keypoints using FAST
     kp1, desc1 = compute_brief_descriptors(image1)
     kp2, desc2 = compute_brief_descriptors(image2)
-    # Match descriptors
+
     matches = match_descriptors(desc1, desc2)
     matches = sorted(matches, key=lambda x: x.distance)
-
     match_img = cv2.drawMatches(image1, kp1, image2, kp2, matches[:100], None, flags=2)
-    
     return match_img, kp1, kp2
 
-# Function to perform ORB feature matching
+# Match image using ORB descriptors
 def orb_feature_matching(image1, image2):
     orb = cv2.ORB_create()
     kp1, des1 = orb.detectAndCompute(image1, None)
@@ -110,9 +101,10 @@ def orb_feature_matching(image1, image2):
 
     matches = match_descriptors(des1, des2)
     matches = sorted(matches, key=lambda x: x.distance)
-
     match_img = cv2.drawMatches(image1, kp1, image2, kp2, matches, None, flags=2)
     return match_img, kp1, kp2
+
+
 
 # Load the image
 image = cv2.imread('./examples/images/twitterlogo.jpg')
