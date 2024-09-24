@@ -45,7 +45,7 @@ def compute_brief_descriptors(image):
         angle = kp.angle
 
         # Compute the rotation matrix for the keypoint
-        M = cv2.getRotationMatrix2D((kp.pt[0], kp.pt[1]), angle, 1)
+        M = cv2.getRotationMatrix2D((kp.pt[0], kp.pt[1]), angle)
 
         # Apply the rotation matrix to the keypoint's patch
         patch = cv2.warpAffine(image, M, (image.shape[1], image.shape[0]))
@@ -115,11 +115,13 @@ plt.subplots_adjust(bottom=0.25)
 
 # Initial rotation angle
 rotation_angle = 0
+scale = 1
 
 # Function to update the display when the slider is adjusted
 def update(val):
-    global rotation_angle
+    global rotation_angle, scale
     rotation_angle = slider.val
+    scale = slider2.val
 
     # Create test image by adding Scale Invariance and Rotational Invariance
     # rotated_image = cv2.pyrDown(image)
@@ -127,7 +129,7 @@ def update(val):
     num_rows, num_cols = image.shape[:2]
 
     # Rotate the image
-    M = cv2.getRotationMatrix2D((num_cols//2, num_rows//2), rotation_angle, 1.0)
+    M = cv2.getRotationMatrix2D((num_cols//2, num_rows//2), rotation_angle, scale)
     rotated_image = cv2.warpAffine(image, M, (num_cols, num_rows))
 
     # Match features
@@ -144,11 +146,14 @@ def update(val):
     plt.draw()
 
 # Create a slider for rotation angle
-ax_slider = plt.axes([0.1, 0.1, 0.8, 0.03])
+ax_slider = plt.axes([0.1, 0.2, 0.8, 0.03])
 slider = Slider(ax_slider, 'Rotation Angle', -180, 180, valinit=0)
 slider.on_changed(update)
 
-
+# Slider for scaling
+ax_slider2 = plt.axes([0.1, 0.1, 0.8, 0.03])
+slider2 = Slider(ax_slider2, 'Scale', 0, 1, valinit=1)
+slider2.on_changed(update) 
 
 # Show the initial match
 update(0)
